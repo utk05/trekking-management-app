@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>All Treks</h2>
+  <a href="{{ url_for('admin.create_trek') }}" class="btn btn-success mb-3">+ New Trek</a>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th><th>Name</th><th>Location</th><th>Difficulty</th>
+        <th>Slots</th><th>Status</th><th>Assigned Staff</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for trek in treks %}
+      <tr>
+        <td>{{ trek['id'] }}</td>
+        <td>{{ trek['name'] }}</td>
+        <td>{{ trek['location'] }}</td>
+        <td>{{ trek['difficulty'] }}</td>
+        <td>{{ trek['available_slots'] }}</td>
+        <td>{{ trek['status'] }}</td>
+        <td>{{ trek['assigned_staff_id'] or 'Unassigned' }}</td>
+        <td>
+          <a href="{{ url_for('admin.edit_trek', trek_id=trek['id']) }}" class="btn btn-sm btn-primary">Edit</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

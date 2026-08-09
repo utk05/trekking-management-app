@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Admin Dashboard</h2>
+  <a href="{{ url_for('admin.list_treks') }}" class="btn btn-secondary mb-3">View All Treks</a>
+  <div class="row mt-4">
+    <div class="col-md-3">
+      <div class="card text-center p-3">
+        <h5>Total Treks</h5>
+        <p class="fs-3">{{ total_treks }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center p-3">
+        <h5>Total Users</h5>
+        <p class="fs-3">{{ total_users }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center p-3">
+        <h5>Total Staff</h5>
+        <p class="fs-3">{{ total_staff }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center p-3">
+        <h5>Total Bookings</h5>
+        <p class="fs-3">{{ total_bookings }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

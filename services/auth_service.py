@@ -6,7 +6,6 @@ login_routes = {
     'staff': 'auth.login_staff',
     'user': 'auth.login_user'
 }
-
 def login_required(role=None):
     def decorator(f):
         @wraps(f)

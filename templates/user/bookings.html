@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>My Bookings</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr><th>Trek</th><th>Location</th><th>Dates</th><th>Booking Date</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      {% for b in bookings %}
+      <tr>
+        <td>{{ b['trek_name'] }}</td>
+        <td>{{ b['location'] }}</td>
+        <td>{{ b['start_date'] }} to {{ b['end_date'] }}</td>
+        <td>{{ b['booking_date'] }}</td>
+        <td>{{ b['status'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

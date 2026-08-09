@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>My Assigned Treks</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Location</th><th>Slots</th><th>Status</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for trek in treks %}
+      <tr>
+        <td>{{ trek['id'] }}</td>
+        <td>{{ trek['name'] }}</td>
+        <td>{{ trek['location'] }}</td>
+        <td>{{ trek['available_slots'] }}</td>
+        <td>{{ trek['status'] }}</td>
+        <td><a href="{{ url_for('staff.update_trek', trek_id=trek['id']) }}" class="btn btn-sm btn-primary">Manage</a> <a href="{{ url_for('staff.view_participants', trek_id=trek['id']) }}" class="btn btn-sm btn-secondary">Participants</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

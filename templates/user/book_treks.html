@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Book: {{ trek['name'] }}</h2>
+  <p>Location: {{ trek['location'] }} | Difficulty: {{ trek['difficulty'] }} | Slots left: {{ trek['available_slots'] }}</p>
+  <form method="POST">
+    <button type="submit" class="btn btn-success">Confirm Booking</button>
+  </form>
+</div>
+{% endblock %}
