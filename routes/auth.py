@@ -22,7 +22,7 @@ def login_user():
         else:
             session['user_id'] = user['id']
             session['role'] = 'user'
-            return redirect(url_for('home'))
+            return redirect(url_for('user.dashboard'))
     return render_template('auth/login_user.html')
 
 
@@ -86,7 +86,7 @@ def login_staff():
         else:
             session['staff_id'] = staff['id']
             session['role'] = 'staff'
-            return redirect(url_for('home'))
+            return redirect(url_for('staff.dashboard'))
     return render_template('auth/login_staff.html')
 
 
@@ -102,5 +102,5 @@ def login_admin():
             return render_template('auth/login_admin.html', error='Invalid email or password')
         session['admin_id'] = admin['id']
         session['role'] = 'admin'
-        return redirect(url_for('home'))
+        return redirect(url_for('admin.dashboard'))
     return render_template('auth/login_admin.html')
