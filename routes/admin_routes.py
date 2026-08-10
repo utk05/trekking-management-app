@@ -49,12 +49,17 @@ def create_trek():
 @admin_bp.route('/treks')
 @login_required(role='admin')
 def list_treks():
+    search = request.args.get('search', '')
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM treks")
+    if search:
+        cur.execute("SELECT * FROM treks WHERE name LIKE ? OR id = ?",
+                    (f"%{search}%", search if search.isdigit() else -1))
+    else:
+        cur.execute("SELECT * FROM treks")
     treks = cur.fetchall()
     conn.close()
-    return render_template('admin/treks.html', treks=treks)
+    return render_template('admin/treks.html', treks=treks, search=search)
 
 @admin_bp.route('/treks/<int:trek_id>/edit', methods=['GET', 'POST'])
 @login_required(role='admin')
@@ -102,12 +107,17 @@ def delete_trek(trek_id):
 @admin_bp.route('/staff')
 @login_required(role='admin')
 def list_staff():
+    search = request.args.get('search', '')
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM staff")
+    if search:
+        cur.execute("SELECT * FROM staff WHERE name LIKE ? OR id = ?",
+                    (f"%{search}%", search if search.isdigit() else -1))
+    else:
+        cur.execute("SELECT * FROM staff")
     staff_list = cur.fetchall()
     conn.close()
-    return render_template('admin/staff.html', staff_list=staff_list)
+    return render_template('admin/staff.html', staff_list=staff_list, search=search)
 
 @admin_bp.route('/staff/<int:staff_id>/approve', methods=['POST'])
 @login_required(role='admin')
@@ -128,3 +138,43 @@ def blacklist_staff(staff_id):
     conn.commit()
     conn.close()
     return redirect(url_for('admin.list_staff'))
+
+@admin_bp.route('/users')
+@login_required(role='admin')
+def list_users():
+    search = request.args.get('search', '')
+    conn = get_connection()
+    cur = conn.cursor()
+    if search:
+        cur.execute("SELECT * FROM users WHERE name LIKE ? OR id = ?",
+                    (f"%{search}%", search if search.isdigit() else -1))
+    else:
+        cur.execute("SELECT * FROM users")
+    users_list = cur.fetchall()
+    conn.close()
+    return render_template('admin/users.html', users_list=users_list, search=search)
+
+@admin_bp.route('/users/<int:user_id>/blacklist', methods=['POST'])
+@login_required(role='admin')
+def blacklist_user(user_id):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("UPDATE users SET is_blacklisted = 1 WHERE id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('admin.list_users'))
+
+@admin_bp.route('/bookings')
+@login_required(role='admin')
+def list_bookings():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT bookings.*, users.name AS user_name, treks.name AS trek_name
+        FROM bookings
+        JOIN users ON bookings.user_id = users.id
+        JOIN treks ON bookings.trek_id = treks.id
+    """)
+    bookings = cur.fetchall()
+    conn.close()
+    return render_template('admin/bookings.html', bookings=bookings)

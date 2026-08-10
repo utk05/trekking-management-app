@@ -15,12 +15,14 @@ def login_user():
         cur.execute("SELECT * FROM users WHERE email = ?", (email,))
         user = cur.fetchone()
         conn.close()
-        if user is not None and check_password_hash(user['password_hash'], password):
+        if user is None or not check_password_hash(user['password_hash'], password):
+            return render_template('auth/login_user.html', error="Invalid email or password")
+        elif user['is_blacklisted'] == 1:
+            return render_template('auth/login_user.html', error="Your account has been blacklisted")
+        else:
             session['user_id'] = user['id']
             session['role'] = 'user'
             return redirect(url_for('home'))
-        else:
-            return render_template('auth/login_user.html', error="Invalid email or password")
     return render_template('auth/login_user.html')
 
 

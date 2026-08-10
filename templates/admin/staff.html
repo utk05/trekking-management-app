@@ -2,6 +2,14 @@
 {% block content %}
 <div class="container mt-5">
   <h2>Manage Staff</h2>
+  <form method="GET" class="row g-2 mb-3">
+  <div class="col-auto">
+    <input type="text" name="search" class="form-control" placeholder="Search by name or ID" value="{{ search or '' }}">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </div>
+</form>
   <table class="table table-bordered">
     <thead>
       <tr>

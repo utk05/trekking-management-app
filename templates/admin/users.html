@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Manage Users</h2>
+  <form method="GET" class="row g-2 mb-3">
+  <div class="col-auto">
+    <input type="text" name="search" class="form-control" placeholder="Search by name or ID" value="{{ search or '' }}">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </div>
+</form>
+  <table class="table table-bordered">
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Email</th><th>Blacklisted</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for u in users_list %}
+      <tr>
+        <td>{{ u['id'] }}</td>
+        <td>{{ u['name'] }}</td>
+        <td>{{ u['email'] }}</td>
+        <td>{{ 'Yes' if u['is_blacklisted'] else 'No' }}</td>
+        <td>
+          {% if not u['is_blacklisted'] %}
+          <form method="POST" action="{{ url_for('admin.blacklist_user', user_id=u['id']) }}" style="display:inline;" onsubmit="return confirm('Blacklist this user?');">
+            <button type="submit" class="btn btn-sm btn-danger">Blacklist</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

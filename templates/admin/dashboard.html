@@ -2,7 +2,11 @@
 {% block content %}
 <div class="container mt-5">
   <h2>Admin Dashboard</h2>
+  <a href="{{ url_for('admin.create_trek') }}" class="btn btn-success mb-3">+ New Trek</a>
   <a href="{{ url_for('admin.list_treks') }}" class="btn btn-secondary mb-3">View All Treks</a>
+  <a href="{{ url_for('admin.list_staff') }}" class="btn btn-secondary mb-3">Manage Staff</a>
+  <a href="{{ url_for('admin.list_users') }}" class="btn btn-secondary mb-3">Manage Users</a>
+  <a href="{{ url_for('admin.list_bookings') }}" class="btn btn-secondary mb-3">View All Bookings</a>
   <div class="row mt-4">
     <div class="col-md-3">
       <div class="card text-center p-3">
