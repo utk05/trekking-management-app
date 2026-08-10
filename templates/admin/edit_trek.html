@@ -28,6 +28,17 @@
       <input type="number" name="available_slots" class="form-control" value="{{ trek['available_slots'] }}" required>
     </div>
     <div class="mb-3">
+      <label>Assign Staff</label>
+      <select name="assigned_staff_id" class="form-control">
+        <option value="">-- Unassigned --</option>
+        {% for staff in eligible_staff %}
+        <option value="{{ staff['id'] }}" {% if trek['assigned_staff_id']==staff['id'] %}selected{% endif %}>
+          {{ staff['name'] }} ({{ staff['email'] }})
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
       <label>Status</label>
       <select name="status" class="form-control" required>
         {% for s in ['Pending', 'Approved', 'Open', 'Closed', 'Completed'] %}
