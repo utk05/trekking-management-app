@@ -8,7 +8,7 @@ app.secret_key = "dev-secret-key-change-later"
 app.register_blueprint(user_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(admin_bp)
-app.register_blueprint(staff_bp)   # ← this line was missing
+app.register_blueprint(staff_bp)   
 
 @app.route('/')
 def home():

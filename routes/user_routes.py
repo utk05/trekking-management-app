@@ -8,12 +8,27 @@ user_bp = Blueprint('user', __name__, url_prefix='/user')
 @user_bp.route('/dashboard')
 @login_required(role='user')
 def dashboard():
+    difficulty = request.args.get('difficulty')
+    location = request.args.get('location')
+
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM treks WHERE status = 'Open'")
+
+    query = "SELECT * FROM treks WHERE status = 'Open'"
+    params = []
+
+    if difficulty:
+        query += " AND difficulty = ?"
+        params.append(difficulty)
+
+    if location:
+        query += " AND location LIKE ?"
+        params.append(f"%{location}%")
+
+    cur.execute(query, params)
     open_treks = cur.fetchall()
     conn.close()
-    return render_template('user/dashboard.html', treks=open_treks)
+    return render_template('user/dashboard.html', treks=open_treks, difficulty=difficulty, location=location)
 
 @user_bp.route('/treks/<int:trek_id>/book', methods=['GET', 'POST'])
 @login_required(role='user')
@@ -59,28 +74,3 @@ def my_bookings():
     bookings = cur.fetchall()
     conn.close()
     return render_template('user/bookings.html', bookings=bookings)
-
-@user_bp.route('/dashboard')
-@login_required(role='user')
-def dashboard():
-    difficulty = request.args.get('difficulty')
-    location = request.args.get('location')
-
-    conn = get_connection()
-    cur = conn.cursor()
-
-    query = "SELECT * FROM treks WHERE status = 'Open'"
-    params = []
-
-    if difficulty:
-        query += " AND difficulty = ?"
-        params.append(difficulty)
-
-    if location:
-        query += " AND location LIKE ?"
-        params.append(f"%{location}%")
-
-    cur.execute(query, params)
-    open_treks = cur.fetchall()
-    conn.close()
-    return render_template('user/dashboard.html', treks=open_treks, difficulty=difficulty, location=location)

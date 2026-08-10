@@ -79,7 +79,7 @@ def seed_admin():
     cur = conn.cursor()
     cur.execute("SELECT * FROM admin")
     if cur.fetchone() is None:
-        hashed = generate_password_hash("password123")
+        hashed = generate_password_hash("admpassword123")
         cur.execute(
             "INSERT INTO admin (email, password_hash) VALUES (?, ?)",
             ("admin@trekapp.com", hashed)
